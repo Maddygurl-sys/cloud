@@ -1,0 +1,54 @@
+openmp:
+
+sudo apt update
+sudo apt install build-essential -y
+gcc --version
+nano openmp.c
+#include <stdio.h>
+#include <omp.h>
+int main() {
+    int sum = 0;
+
+    #pragma omp parallel for reduction(+:sum)
+    for (int i = 1; i <= 100; i++) {
+        sum += i;
+    }
+
+    printf("Sum of first 100 numbers: %d\n", sum);
+    return 0;
+}
+
+gcc -fopenmp openmp.c -o openmp
+./openmp
+
+
+
+mpi:
+
+sudo apt update
+sudo apt install build-essential openmpi-bin libopenmpi-dev -y
+mpicc --version
+mpirun --version
+nano mpi_sum.c
+
+#include <stdio.h>
+#include <mpi.h>
+
+int main(int argc, char *argv[]) {
+    int rank, size;
+
+    MPI_Init(&argc, &argv);
+
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+
+    printf("Hello from process %d of %d\n", rank, size);
+
+    MPI_Finalize();
+
+    return 0;
+}
+mpicc mpi.c -o mpi
+mpirun -np 4 ./mpi
+
+

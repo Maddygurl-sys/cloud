@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth0 Login Demo</title>
+</head>
+<body>
+    <h1>Auth0 Authentication</h1>
+
+    <button id="loginBtn" onclick="login()" disabled>
+        Sign In
+    </button>
+
+    <button id="signupBtn" onclick="signup()" disabled>
+        Create Account
+    </button>
+
+    <button id="logoutBtn" onclick="logout()" disabled>
+        Logout
+    </button>
+
+    <h2 id="message">Initialising Auth0...</h2>
+    <p id="email"></p>
+    <p id="error" style="color: red;"></p>
+
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/2.28/auth0-spa-js.production.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

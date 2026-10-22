@@ -1,0 +1,104 @@
+
+sudo apt update
+sudo apt install openjdk-17-jdk wget -y
+
+java -version
+javac -version
+
+cd ~/Downloads
+
+wget https://downloads.apache.org/spark/spark-4.2.0/spark-4.2.0-bin-hadoop3.tgz
+
+tar -xzf spark-4.2.0-bin-hadoop3.tgz
+
+sudo mv spark-4.2.0-bin-hadoop3 /usr/local/spark
+
+sudo chown -R "$USER":"$USER" /usr/local/spark
+
+ls /usr/lib/jvm/
+readlink -f "$(which java)"
+
+gedit ~/.bashrc
+            export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-arm64
+            export SPARK_HOME=/usr/local/spark
+            export PATH=$PATH:$JAVA_HOME/bin:$SPARK_HOME/bin:$SPARK_HOME/sbin
+source ~/.bashrc
+
+java -version
+spark-submit --version
+
+spark-shell
+
+val data = sc.parallelize(List("hello spark", "hello hadoop", "hello spark"))
+
+val pairs = data.flatMap(line => line.split(" ")).map(word => (word, 1))
+
+val result = pairs.reduceByKey(_ + _)
+
+result.collect()
+
+:quit
+:exit
+
+
+
+
+
+
+
+
+sudo apt update && sudo apt install openjdk-17-jre python3-pip -y
+pip3 install pyspark
+
+
+
+echo "enter a long text here" > input.txt
+
+
+{follow below line }
+
+
+nano wordcount.py
+--------------------
+
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName("WordCount").getOrCreate()
+sc = spark.sparkContext
+
+text_data = sc.textFile("input.txt")
+
+word_counts = text_data.flatMap(lambda line: line.split(" ")) \
+                       .map(lambda word: (word, 1)) \
+                       .reduceByKey(lambda a, b: a + b)
+
+for word, count in word_counts.collect():
+    print(f"{word}: {count}")
+
+spark.stop()
+
+python3 wordcount.py
+
+new method
+
+
+
+
+
+sudo apt install scala
+
+scala --version
+spark-shell
+
+scala> val input = sc.textFile("input.txt")
+
+scala> val counts = input.flatMap(line => line.split(" "))
+             .map(word => (word, 1))
+             .reduceByKey(_ + _)
+
+counts.collect().foreach(println)
+
+Output displayed
+
+//
+counts.saveAsTextFile("output")
